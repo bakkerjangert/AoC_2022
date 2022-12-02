@@ -8,6 +8,9 @@ with open('input.txt') as f:
     lines = f.read().splitlines()
 
 # Elf --> A = Rock, B = Paper, C = Scissors
+# Score --> Rock = 1, Paper = 2, Scissors = 3
+# Score --> Lose = 0, Draw = 3, Win = 6
+# For total score just add both score lines together
 
 # Part 1
 # You --> X = Rock, Y = Paper, Z = Scissors
