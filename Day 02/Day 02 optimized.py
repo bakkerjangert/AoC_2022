@@ -7,7 +7,7 @@ from collections import Counter
 tic = time.perf_counter()
 with open('input.txt') as f:
     lines = f.read().splitlines()
-data = Counter(lines)  # Generates dict with unique entries with the times they appear
+data = Counter(lines)  # Generates dict with unique entries as key and with the times they appear as value
 
 # Elf --> A = Rock, B = Paper, C = Scissors
 # Score --> Rock = 1, Paper = 2, Scissors = 3
