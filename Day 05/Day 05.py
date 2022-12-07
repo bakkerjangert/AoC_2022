@@ -18,6 +18,8 @@ tic = time.perf_counter()
 PRINT_STEPS = False
 file = 'input.txt'
 # file = 'test.txt'
+# file = 'aoc_2022_day05_large_input.txt'
+file = 'aoc_2022_day05_large_input-2.txt'
 
 with open(file) as f:
     lines = f.read().splitlines()
