@@ -8,6 +8,7 @@ tic = time.perf_counter()
 
 file = 'input.txt'
 # file = 'test.txt'
+file = 'aoc_2022_day07_deep.txt'
 
 with open(file) as f:
     lines = f.read().splitlines()
@@ -38,8 +39,11 @@ cur_dir = []
 max_level = 0
 max_size = 100_000
 answer = 0
+no_lines = len(lines)
 
-for line in lines:
+for i, line in enumerate(lines):
+    if i % 10000 == 0:
+        print(f'At {round(i / no_lines * 100, 2)}%')
     if '$ cd' in line:
         if '..' in line:
             cur_dir.pop(-1)
