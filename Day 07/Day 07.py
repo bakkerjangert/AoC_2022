@@ -8,7 +8,6 @@ tic = time.perf_counter()
 
 file = 'input.txt'
 # file = 'test.txt'
-file = 'aoc_2022_day07_deep.txt'
 
 with open(file) as f:
     lines = f.read().splitlines()
