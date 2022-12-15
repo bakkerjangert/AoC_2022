@@ -81,7 +81,7 @@ while True:
             break
     if bottom_found:
         break
-
+print_grid()
 print(f'The answer to part 1 = {sand_grains}')
 
 # Part 2
@@ -125,8 +125,9 @@ while True:
         break
 print_grid_2()
 
+# Add side triangles
 n1, n2 = ''.join(grid_pt2[:, 1]).count('o') - 1, ''.join(grid_pt2[:, -2]).count('o') - 1
-sand_grains += n1 * (n1 + 1) // 2 + n2 * (n2 + 1) // 2
+sand_grains += n1 * (n1 + 1) // 2 + n2 * (n2 + 1) // 2  # formula for N = 1 + 2 + 3 ... + n
 
 print(f'The answer to part 2 = {sand_grains}')
 
