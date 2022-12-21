@@ -27,9 +27,9 @@ def check_repeat(grid):
     top = grid[: grid.shape[0] // 2]
     bottom = grid[grid.shape[0] // 2:]
     if np.array_equal(top, bottom):
-        print('\nNext block')
-        for i in range(top.shape[0]):
-            print(''.join(top[i]) + '  @  ' + ''.join(bottom[i]))
+        # print('\nCheck result')
+        # for i in range(top.shape[0]):
+        #     print(''.join(top[i]) + '  @  ' + ''.join(bottom[i]))
         return True
     return False
 
@@ -63,6 +63,8 @@ skip_lines = 200
 checker, stage = None, 0
 pt1_found, pt2_found = False, False
 start_block, end_block = None, None
+len_range = None
+height_data = dict()
 
 while block_number < goal + 1:
     if pt1_found and pt2_found:
@@ -79,44 +81,49 @@ while block_number < goal + 1:
             grid = np.delete(grid, (0), axis=0)
         # Check if part 1 is found
         if block_number == goal_pt1 + 1:
-            print(f'Answer part 1 = {grid.shape[0] - 1}')
+            print(f'The answer to part 1 = {grid.shape[0] - 1}')
             pt1_found = True
         if block_number % 1000 == 0 and stage == 0:
             line_1 = grid[skip_lines - 1]
             for i in range(grid.shape[0] - skip_lines):
+                if pt2_found:
+                    break
                 line_2 = grid[skip_lines + i]
                 if np.array_equal(line_1, line_2):
                     if skip_lines + 2 * i < grid.shape[0]:
                         sub_grid = grid[skip_lines - 1: skip_lines + 2 * i + 1]
                         check = check_repeat(sub_grid)
                         if check and sub_grid.shape[0] > 6:
-                            print(f'Duplicate found')
                             checker = sub_grid[:sub_grid.shape[0] // 2]
                             stage += 1
-                            print(f'Block = {block_number}')
+                            len_range = checker.shape[0]
+                            # print(f'Duplicate found with length {len_range}')
                             break
-        if stage == 2 and not pt2_found:
-            delta_block += 1
-            if grid.shape[0] - heigth <= checker.shape[0]:
-                block_data[delta_block] = grid.shape[0] - heigth
-                print(f'{delta_block} --> {block_data[delta_block]}')
-            else:
-                end_block = block_number - 1
-                new_goal = goal - end_block
-                print(new_goal)
-                cycles =  new_goal // max(block_data.keys())
-                rest_blocks = new_goal % max(block_data.keys())
-                total_rows = (grid.shape[0] - 1) + cycles * checker.shape[0] + block_data[rest_blocks]
-                print(f'The answer to part 2 = {total_rows}')
-                pt2_found = True
         if stage == 1:
-            if np.array_equal(grid[20:checker.shape[0]], checker[20:]):
-                print('HERE!!!')
-                start_block = block_number
-                delta_block = 0
-                heigth = grid.shape[0]
-                print(f'start block = {start_block}')
+            if np.array_equal(grid[0: 4], grid[len_range: len_range + 4]):
+                # print_status(grid[:len_range + 1])
+                # print(f'stable line found after {block_number - 1} blocks')
+                # print(np.count_nonzero(grid[:len_range] == '#') // 22)
+                block_counter = -1
                 stage += 1
+                first_repetition = True
+        if stage == 2:
+            block_counter += 1
+            if not first_repetition:
+                height_data[block_counter] = grid.shape[0] - height
+            if block_counter > 10:
+                if np.array_equal(grid[50: len_range], checker[50:]):
+                    if not first_repetition and not pt2_found:
+                        # print(f'There are {block_counter} blocks per repetition')
+                        new_goal = goal - (block_number - 1)
+                        cycles = new_goal // block_counter
+                        rest_blocks = new_goal % cycles
+                        total_height = grid.shape[0] - 1 + cycles * len_range + height_data[rest_blocks]
+                        print(f'The answer to part 2 = {total_height}')
+                        pt2_found = True
+                    first_repetition = False
+                    block_counter = 0
+                    height = grid.shape[0]
         for r in range(3 + block[-1][0] + 1):
             grid = np.r_[row,  grid]
         # # Show Next Block
